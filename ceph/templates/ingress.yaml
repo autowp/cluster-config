@@ -1,0 +1,51 @@
+{{- range .Values.s3.endpoints }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: s3-{{ .name }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .hostname | quote }}
+      secretName: tls-{{ .name }}
+  rules:
+    - host: {{ .hostname | quote }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: s3-{{ .name }}
+                port:
+                  name: app-port
+            path: /
+            pathType: Prefix
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s3-{{ .name }}
+spec:
+  ports:
+    - name: app-port
+      port: 7480
+      protocol: TCP
+      targetPort: 7480
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: s3-{{ .name }}
+subsets:
+  - addresses:
+      - ip: {{ .address | quote }}
+    ports:
+      - port: 7480
+        name: app-port
+{{- end }}

@@ -1,0 +1,8 @@
+s3:
+  endpoints:
+    - name: n1
+      hostname: n1.example.com
+    - name: n2
+      hostname: n1.example.com
+    - name: n3
+      hostname: n1.example.com
