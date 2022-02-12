@@ -1,0 +1,20 @@
+controller:
+  config:
+    use-proxy-protocol: true
+    entries:
+      use-proxy-protocol: "true"
+      proxy-protocol: "true"
+      http2: "true"
+      lb-method: "round_robin"
+  service:
+    httpPort:
+      nodePort: 31080
+    httpsPort:
+      nodePort: 31443
+    nodePorts:
+      http: "31080"
+      https: "31443"
+prometheus:
+  create: false
+rbac:
+  create: true
