@@ -1,0 +1,133 @@
+global:
+  edition: ce
+  psql:
+    host: i38
+    database: gitlabhq_production
+    username: gitlab
+    password:
+      secret: gitlab-postgres-password
+      key: password
+  hosts:
+    domain: gitlab.pereslegin.ru
+    https: true
+    gitlab:
+      name: gitlab.pereslegin.ru
+      https: true
+    registry:
+      name: registry.pereslegin.ru
+      https: true
+    minio:
+      name: minio.pereslegin.ru
+      https: true
+  shell:
+    port: 22
+  ingress:
+    class: nginx
+    annotations:
+      kubernetes.io/tls-acme: true
+      cert-manager.io/cluster-issuer: letsencrypt
+    configureCertmanager: false
+  grafana:
+    enabled: false
+  appConfig:
+    backups:
+      bucket: gitlab-backup
+    omniauth:
+      enabled: true
+      autoSignInWithProvider: openid_connect
+      syncProfileFromProvider: [ ]
+      syncProfileAttributes: [ 'email' ]
+      allowSingleSignOn: true
+      blockAutoCreatedUsers: true
+      autoLinkLdapUser: false
+      autoLinkSamlUser: false
+      autoLinkUser: true
+      externalProviders: [ ]
+      allowBypassTwoFactor: [ ]
+      providers:
+        - secret: gitlab-keycloak-oidc
+certmanager:
+  install: false
+certmanager-issuer:
+  cert-manager.io/cluster-issuer: letsencrypt
+  email: dmitry@pereslegin.ru
+gitlab-runner:
+  enabled: true
+  runners:
+    privileged: true
+gitlab-exporter:
+  enabled: false
+  metrics:
+    enabled: false
+nginx-ingress:
+  enabled: false
+minio:
+  ingress:
+    tls:
+      secretName: gitlab-minio-secret
+  persistence:
+    storageClass: gitlab-minio
+    size: 500Gi
+redis:
+  cluster:
+    enabled: false
+  master:
+    persistence:
+      storageClass: gitlab-redis
+  metrics:
+    enabled: false
+gitlab:
+  gitaly:
+    persistence:
+      enabled: true
+      storageClass: gitlab-repo
+  webservice:
+    ingress:
+      tls:
+        secretName: gitlab-gitlab-tls
+    replicaCount: 1
+    workerProcesses: 2
+    minReplicas: 1
+    maxReplicas: 1
+  gitlab-shell:
+    replicaCount: 1
+    minReplicas: 1
+    maxReplicas: 1
+  toolbox:
+    backups:
+      cron:
+        enabled: true
+        concurrencyPolicy: Forbid
+        failedJobsHistoryLimit: 1
+        schedule: "0 5 * * *"
+        startingDeadlineSeconds: null
+        successfulJobsHistoryLimit: 3
+        suspend: false
+        extraArgs: ""
+      objectStorage:
+        backend: s3
+        config:
+          secret: gitlab-s3-backup
+          key: config
+postgresql:
+  install: false
+  enabled: true
+  replication:
+    enabled: false
+  persistence:
+    storageClass: gitlab-postgresql
+  metrics:
+    enabled: false
+prometheus:
+  install: false
+  server:
+    persistentVolume:
+      storageClass: gitlab-prometheus
+      size: 500Gi
+registry:
+  ingress:
+    tls:
+      secretName: gitlab-registry-secret
+  hpa:
+    minReplicas: 1
+    maxReplicas: 1

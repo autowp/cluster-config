@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Gi
+  local:
+    path: /root/k8s-pv/gitlab/redis
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - i38
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gitlab-redis
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-minio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Gi
+  local:
+    path: /root/k8s-pv/gitlab/minio
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - i38
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gitlab-minio
+  volumeMode: Filesystem
+
+#---
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  name: gitlab-minio
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: gitlab-minio
+#  resources:
+#    requests:
+#      storage: 500Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-postgresql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Gi
+  local:
+    path: /root/k8s-pv/gitlab/postgresql
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - i38
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gitlab-postgresql
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-repo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Gi
+  local:
+    path: /root/k8s-pv/gitlab/repo
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - i38
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gitlab-repo
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-prometheus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Gi
+  local:
+    path: /root/k8s-pv/gitlab/prometheus
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - i38
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gitlab-prometheus
+  volumeMode: Filesystem
+
+#---
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  name: gitlab-prometheus-server
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: gitlab-prometheus
+#  resources:
+#    requests:
+#      storage: 500Gi
