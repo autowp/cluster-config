@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql
+stringData:
+  password: {{ .Values.postgresql.password | quote }}
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgresql-backup
+spec:
+  schedule: "10 5 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - secret:
+              defaultMode: 420
+              secretName: s3
+            name: config
+          containers:
+            - name: mysql-backup
+              image: autowp/autowp-tools
+              imagePullPolicy: Always
+              env:
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql
+                      key: password
+              command:
+                - /bin/bash
+              args:
+                - -c
+                - pg_dumpall --host {{ .Values.postgresql.host | quote }} -U {{ .Values.postgresql.username | quote }} | gzip -f | s3cmd -c /.s3cfg put - "s3://{{ .Values.s3.bucket }}/postgresql-$(date +"%Y-%m-%d_%H-%M-%S").sql.gz"
+              volumeMounts:
+              - mountPath: /.s3cfg
+                name: config
+                subPath: .s3cfg
+                readOnly: true
+          restartPolicy: OnFailure
+  concurrencyPolicy: Forbid

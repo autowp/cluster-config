@@ -1,0 +1,10 @@
+postgresql:
+  host: example.org
+  post: 5432
+  username: backup
+  password: password
+s3:
+  bucket: bucket
+  accessKey: accessKey
+  hostname: example.org
+  secret: secret
