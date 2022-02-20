@@ -1,11 +1,11 @@
 global:
   edition: ce
   psql:
-    host: i38
+    host: 192.168.100.38
     database: gitlabhq_production
     username: gitlab
     password:
-      secret: gitlab-postgres-password
+      secret: postgres-password
       key: password
   hosts:
     domain: gitlab.pereslegin.ru
@@ -88,11 +88,11 @@ gitlab:
     replicaCount: 1
     workerProcesses: 2
     minReplicas: 1
-    maxReplicas: 1
+    maxReplicas: 3
   gitlab-shell:
     replicaCount: 1
     minReplicas: 1
-    maxReplicas: 1
+    maxReplicas: 3
   toolbox:
     backups:
       cron:
@@ -130,4 +130,4 @@ registry:
       secretName: gitlab-registry-secret
   hpa:
     minReplicas: 1
-    maxReplicas: 1
+    maxReplicas: 3

@@ -1,20 +1,56 @@
 controller:
-  config:
-    use-proxy-protocol: true
-    entries:
-      use-proxy-protocol: "true"
-      proxy-protocol: "true"
-      http2: "true"
-      lb-method: "round_robin"
+  kind: DaemonSet
   service:
-    httpPort:
-      nodePort: 31080
-    httpsPort:
-      nodePort: 31443
     nodePorts:
       http: "31080"
       https: "31443"
-prometheus:
-  create: false
-rbac:
-  create: true
+  hostPort:
+    enabled: true
+    ports:
+      http: 80
+      https: 443
+  ingressClassResource:
+    default: true
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+    prometheusRule:
+      enabled: true
+      rules:
+        - alert: NGINXConfigFailed
+          expr: count(nginx_ingress_controller_config_last_reload_successful == 0) > 0
+          for: 1s
+          labels:
+            severity: critical
+          annotations:
+            description: bad ingress config - nginx config test failed
+            summary: uninstall the latest ingress changes to allow config reloads to resume
+        - alert: NGINXCertificateExpiry
+          expr: (avg(nginx_ingress_controller_ssl_expire_time_seconds) by (host) - time()) < 604800
+          for: 1s
+          labels:
+            severity: critical
+          annotations:
+            description: ssl certificate(s) will expire in less then a week
+            summary: renew expiring certificates to avoid downtime
+        - alert: NGINXTooMany500s
+          expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"5.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            description: Too many 5XXs
+            summary: More than 5% of all requests returned 5XX, this requires your attention
+        - alert: NGINXTooMany400s
+          expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"4.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            description: Too many 4XXs
+            summary: More than 5% of all requests returned 4XX, this requires your attention
+defaultBackend:
+  enabled: true

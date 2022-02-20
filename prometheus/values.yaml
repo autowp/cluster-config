@@ -1,0 +1,82 @@
+alertmanager:
+  enabled: true
+  ingress:
+    enabled: false
+    hosts:
+      - pereslegin.ru
+    paths: []
+    pathType: ImplementationSpecific
+    tls:
+      - secretName: alertmanager-general-tls
+        hosts:
+          - pereslegin.ru
+  config:
+    route:
+      receiver: default-receiver
+      routes:
+        - match:
+            alertname: Watchdog
+          receiver: null
+grafana:
+  serviceMonitor:
+    path: "/grafana/metrics"
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    enabled: true
+    hosts:
+      - pereslegin.ru
+    path: /grafana/?(.*)
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+          - pereslegin.ru
+  grafana.ini:
+    server:
+      root_url: https://pereslegin.ru/grafana
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: prometheus
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - prometheus.pereslegin.ru
+    tls:
+      - secretName: prometheus-general-tls
+        hosts:
+          - prometheus.pereslegin.ru
+
+defaultRules:
+  create: true
+  rules:
+    etcd: false
+    kubeApiserver: false
+    kubeApiserverAvailability: false
+    kubeApiserverSlos: false
+    kubeProxy: false
+    kubeScheduler: false
+
+kubeScheduler:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false

@@ -58,29 +58,29 @@ spec:
 #    requests:
 #      storage: 500Gi
 
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: gitlab-postgresql
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 500Gi
-  local:
-    path: /root/k8s-pv/gitlab/postgresql
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - i38
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: gitlab-postgresql
-  volumeMode: Filesystem
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: gitlab-postgresql
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  capacity:
+#    storage: 500Gi
+#  local:
+#    path: /root/k8s-pv/gitlab/postgresql
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#        - matchExpressions:
+#            - key: kubernetes.io/hostname
+#              operator: In
+#              values:
+#                - i38
+#  persistentVolumeReclaimPolicy: Retain
+#  storageClassName: gitlab-postgresql
+#  volumeMode: Filesystem
 
 ---
 apiVersion: v1
