@@ -1,0 +1,57 @@
+serviceAccount:
+  create: false
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  rules:
+    - host: auth.pereslegin.ru
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: auth.wheelsage.org
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - auth.pereslegin.ru
+      secretName: tls-pereslegin
+    - hosts:
+        - auth.wheelsage.org
+      secretName: tls-wheelsage
+postgresql:
+  enabled: false
+
+extraEnv: |
+  - name: DB_VENDOR
+    value: postgres
+  - name: DB_ADDR
+    value: 192.168.100.38
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_DATABASE
+    value: keycloak
+  - name: PROXY_ADDRESS_FORWARDING
+    value: "true"
+
+extraEnvFrom: |
+  - secretRef:
+      name: '{{ include "keycloak.fullname" . }}-db'
+  - secretRef:
+      name: '{{ include "keycloak.fullname" . }}-admin'
+
+serviceMonitor:
+  enabled: true
+  labels:
+    release: kube-prometheus-stack
+
+extraServiceMonitor:
+  enabled: true
+  labels:
+    release: kube-prometheus-stack
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
