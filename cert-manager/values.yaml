@@ -1,6 +1,10 @@
 installCRDs: true
 prometheus:
-  enabled: false
+  enabled: true
+  servicemonitor:
+    enabled: true
+    labels:
+      release: kube-prometheus-stack
 ingressShim:
   defaultIssuerName: letsencrypt
   defaultIssuerKind: ClusterIssuer
