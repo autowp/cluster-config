@@ -56,3 +56,9 @@ backup:
   s3AccessKey: "key"
   s3Secret: "secret"
   s3Bucket: "bucket"
+  mysqlDatabases:
+    - name: autowp
+      schedule: "30 5 * * *"
+    - name: furygoose
+      schedule: "30 4 * * *"
+

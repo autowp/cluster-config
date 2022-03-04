@@ -1,37 +1,101 @@
 apiVersion: v1
-data: {{ (tpl (.Files.Glob "configs/mysql-backup/*").AsConfig . ) | nindent 2 }}
-kind: ConfigMap
+kind: Secret
 metadata:
   name: mysql-backup
+stringData:
+  .s3cfg: |
+    [default]
+    access_key = {{ .Values.backup.s3AccessKey }}
+    bucket_location = US
+    check_ssl_certificate = True
+    check_ssl_hostname = True
+    cloudfront_host = cloudfront.amazonaws.com
+    default_mime_type = binary/octet-stream
+    delay_updates = False
+    delete_after = False
+    delete_after_fetch = False
+    delete_removed = False
+    dry_run = False
+    enable_multipart = True
+    encoding = UTF-8
+    encrypt = False
+    follow_symlinks = False
+    force = False
+    get_continue = False
+    gpg_command = /usr/bin/gpg
+    gpg_decrypt = %(gpg_command)s -d --verbose --no-use-agent --batch --yes --passphrase-fd %(passphrase_fd)s -o %(output_file)s %(input_file)s
+    gpg_encrypt = %(gpg_command)s -c --verbose --no-use-agent --batch --yes --passphrase-fd %(passphrase_fd)s -o %(output_file)s %(input_file)s
+    guess_mime_type = True
+    host_base = {{ .Values.backup.s3Hostname }}
+    host_bucket = {{ .Values.backup.s3Hostname }}/%(bucket)
+    human_readable_sizes = False
+    invalidate_default_index_on_cf = False
+    invalidate_default_index_root_on_cf = True
+    invalidate_on_cf = False
+    limit = -1
+    limitrate = 0
+    list_md5 = False
+    long_listing = False
+    max_delete = -1
+    multipart_chunk_size_mb = 15
+    multipart_max_chunks = 10000
+    preserve_attrs = True
+    progress_meter = True
+    put_continue = False
+    recursive = False
+    recv_chunk = 65536
+    reduced_redundancy = False
+    requester_pays = False
+    restore_days = 1
+    restore_priority = Standard
+    secret_key = {{ .Values.backup.s3Secret }}
+    send_chunk = 65536
+    server_side_encryption = False
+    signature_v2 = False
+    signurl_use_https = False
+    simpledb_host = sdb.amazonaws.com
+    skip_existing = False
+    socket_timeout = 300
+    stats = False
+    stop_on_error = True
+    urlencoding_mode = normal
+    use_http_expect = False
+    use_https = True
+    use_mime_magic = True
+    verbosity = WARNING
+    website_endpoint = http://%(bucket)s.s3-website-%(location)s.amazonaws.com/
+    website_index = index.html
 
+
+{{- range .Values.backup.mysqlDatabases }}
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: mysql-backup
+  name: mysql-backup-{{ .name }}
 spec:
-  schedule: "30 5 * * *"
+  schedule: {{ .schedule | quote }}
   jobTemplate:
     spec:
       template:
         spec:
           volumes:
-          - configMap:
+          - name: config
+            secret:
               defaultMode: 420
-              name: mysql-backup
-            name: config
+              secretName: mysql-backup
           containers:
             - name: mysql-backup
               image: autowp/autowp-tools
               imagePullPolicy: Always
               env:
               - name: MYSQL_ROOT_PASSWORD
-                value: {{ .Values.mysql.auth.rootPassword | quote }}
+                value: {{ $.Values.mysql.auth.rootPassword | quote }}
               command:
                 - /bin/bash
               args:
                 - -c
-                - mysqldump --host={{ include "mysql.primary.fullname" .Subcharts.mysql | quote }} -u{{ .Values.mysql.auth.username }} -p{{ .Values.mysql.auth.password|quote }} --set-gtid-purged=OFF --hex-blob --no-tablespaces autowp | gzip -f | s3cmd -c /.s3cfg put - "s3://{{ .Values.backup.s3Bucket }}/$(date +"%Y-%m-%d_%H-%M-%S").sql.gz" --acl-private --guess-mime-type --no-progress
+                - mysqldump --host={{ include "mysql.primary.fullname" $.Subcharts.mysql | quote }} -uroot -p{{ $.Values.mysql.auth.rootPassword|quote }} --set-gtid-purged=OFF --hex-blob --no-tablespaces {{ .name | quote }} | gzip -f | s3cmd -c /.s3cfg put - "s3://{{ $.Values.backup.s3Bucket }}/{{ .name }}-$(date +"%Y-%m-%d_%H-%M-%S").sql.gz" --acl-private --guess-mime-type --no-progress
               volumeMounts:
               - mountPath: /.s3cfg
                 name: config
@@ -39,3 +103,4 @@ spec:
                 readOnly: true
           restartPolicy: OnFailure
   concurrencyPolicy: Forbid
+{{- end }}
