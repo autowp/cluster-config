@@ -35,6 +35,8 @@ extraEnv: |
     value: keycloak
   - name: PROXY_ADDRESS_FORWARDING
     value: "true"
+  - name: KEYCLOAK_STATISTICS
+    value: all
 
 extraEnvFrom: |
   - secretRef:
@@ -47,10 +49,10 @@ serviceMonitor:
   labels:
     release: kube-prometheus-stack
 
-extraServiceMonitor:
-  enabled: true
-  labels:
-    release: kube-prometheus-stack
+#extraServiceMonitor:
+#  enabled: true
+#  labels:
+#    release: kube-prometheus-stack
 
 autoscaling:
   enabled: true
