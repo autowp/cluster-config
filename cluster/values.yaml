@@ -1,0 +1,22 @@
+admin:
+  serviceAccount: dashboard-user
+
+kubernetes-dashboard:
+  serviceMonitor:
+    enabled: false
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+
+metrics-server:
+  metrics:
+    enabled: true
+
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: kube-prometheus-stack
+  args:
+    - "--kubelet-insecure-tls"

@@ -1,0 +1,9 @@
+dependencies:
+- name: kubernetes-dashboard
+  repository: https://kubernetes.github.io/dashboard/
+  version: 5.2.0
+- name: metrics-server
+  repository: https://kubernetes-sigs.github.io/metrics-server/
+  version: 3.8.2
+digest: sha256:2f357ad6228a17c3cd8e687aab6a5b9895480a95961c7191f15f6cbf60700b40
+generated: "2022-03-06T14:40:36.241166637+03:00"
