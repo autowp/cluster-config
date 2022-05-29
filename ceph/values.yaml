@@ -2,7 +2,10 @@ s3:
   endpoints:
     - name: n1
       hostname: n1.example.com
+      address: 192.168.0.1
     - name: n2
       hostname: n1.example.com
+      address: 192.168.0.2
     - name: n3
       hostname: n1.example.com
+      address: 192.168.0.3

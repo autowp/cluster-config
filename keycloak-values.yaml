@@ -40,9 +40,9 @@ extraEnv: |
 
 extraEnvFrom: |
   - secretRef:
-      name: '{{ include "keycloak.fullname" . }}-db'
+      name: 'keycloak-db'
   - secretRef:
-      name: '{{ include "keycloak.fullname" . }}-admin'
+      name: 'keycloak-admin'
 
 serviceMonitor:
   enabled: true
