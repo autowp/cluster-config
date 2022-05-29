@@ -14,6 +14,8 @@ repositories:
     url: https://prometheus-community.github.io/helm-charts
   - name: codecentric
     url: https://codecentric.github.io/helm-charts
+  - name: gitlab
+    url: https://charts.gitlab.io/
 
 releases:
   - name: cert-manager
@@ -34,6 +36,7 @@ releases:
       name: cert-manager-cluster-issuer
     options:
       install: true
+      create_namespace: true
 
   - name: metrics-server
     namespace: kube-system
@@ -64,6 +67,7 @@ releases:
       - ingress-nginx-values.yaml
     options:
       install: true
+      create_namespace: true
 
   - name: ceph
     namespace: ceph
@@ -75,6 +79,7 @@ releases:
       - ceph-values.production.yaml
     options:
       install: true
+      create_namespace: true
 
   - name: backup
     namespace: backup
@@ -84,6 +89,7 @@ releases:
       - backup-values.production.yaml
     options:
       install: true
+      create_namespace: true
 
   - name: kube-prometheus-stack
     namespace: monitoring
@@ -94,6 +100,7 @@ releases:
       - prometheus-values.production.yaml
     options:
       install: true
+      create_namespace: true
 
   - name: keycloak
     namespace: keycloak
@@ -105,3 +112,16 @@ releases:
       - keycloak-values.production.yaml
     options:
       install: true
+      create_namespace: true
+
+  - name: gitlab
+    namespace: gitlab
+    chart:
+      name: gitlab/gitlab
+      version: 5.10.3
+    values:
+      - gitlab-values.yaml
+      - gitlab-values.production.yaml
+    options:
+      install: true
+    create_namespace: true
