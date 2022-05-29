@@ -114,11 +114,23 @@ releases:
       install: true
       create_namespace: true
 
+  - name: gitlab-prerequisites
+    namespace: gitlab
+    chart:
+      name: gitlab-prerequisites
+    values:
+      - gitlab-prerequisites-values.production.yaml
+    options:
+      install: true
+      create_namespace: true
+
   - name: gitlab
     namespace: gitlab
     chart:
       name: gitlab/gitlab
       version: 5.10.3
+    depends_on:
+      - gitlab-prerequisites@gitlab
     values:
       - gitlab-values.yaml
       - gitlab-values.production.yaml

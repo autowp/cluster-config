@@ -1,0 +1,12 @@
+oidc:
+  issuer: https://auth.example.com/auth/realms/general
+  clientID: gitlab
+  clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxx
+  redirectUri: https://gitlab.example.com/users/auth/openid_connect/callback
+postgres:
+  password: example
+backup:
+  s3:
+    accessKey: xxxxxxxxxxxxxxxxxxxxxxxxxx
+    host: s3.example.com
+    secretKey: xxxxxxxxxxxxxxxxxxxxxxxxxx

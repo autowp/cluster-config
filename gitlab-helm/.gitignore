@@ -1,4 +1,0 @@
-values.production.yaml
-gitlab-keycloak-oidc.secret.yaml
-postgres.secret.yaml
-s3-backup.secret.yaml
