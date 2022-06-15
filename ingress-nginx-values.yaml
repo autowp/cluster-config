@@ -1,5 +1,9 @@
 controller:
   kind: DaemonSet
+  config:
+    proxy-buffer-size: 64K
+    proxy-buffers: 16 64K
+    disable-access-log: true
   service:
     nodePorts:
       http: "31080"
