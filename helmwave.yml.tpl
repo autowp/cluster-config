@@ -16,6 +16,8 @@ repositories:
     url: https://codecentric.github.io/helm-charts
   - name: gitlab
     url: https://charts.gitlab.io/
+  - name: sentry
+    url: https://sentry-kubernetes.github.io/charts
 
 releases:
   - name: cert-manager
@@ -136,4 +138,18 @@ releases:
       - gitlab-values.production.yaml
     options:
       install: true
-    create_namespace: true
+      create_namespace: true
+
+  - name: sentry
+    namespace: sentry
+    chart:
+      name: sentry/sentry
+      version: 14.1.2
+    depends_on:
+      - kube-prometheus-stack@monitoring
+    values:
+      - sentry-values.yaml
+      - sentry-values.production.yaml
+    options:
+      install: true
+      create_namespace: true

@@ -1,0 +1,155 @@
+system:
+  url: "https://sentry.pereslegin.ru"
+  public: false
+
+auth:
+  register: false
+
+nginx:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+  hostname: sentry.pereslegin.ru
+  tls:
+    - secretName: tls
+      hosts:
+        - sentry.pereslegin.ru
+
+filestore:
+  backend: s3
+
+config:
+  # No YAML Extension Config Given
+  configYml: {}
+  sentryConfPy: |
+    # No Python Extension Config Given
+  snubaSettingsPy: |
+    # No Python Extension Config Given
+  relay: |
+    # No YAML relay config given
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+
+kafka:
+  enabled: true
+  replicaCount: 1
+  defaultReplicationFactor: 1
+  offsetsTopicReplicationFactor: 1
+  numPartitions: 1
+  persistence:
+    storageClass: sentry-kafka
+  zookeeper:
+    enabled: true
+    replicaCount: 1
+    persistence:
+      enabled: true
+      storageClass: sentry-zookeeper
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  metrics:
+    kafka:
+      enabled: true
+    jmx:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+
+rabbitmq:
+  replicaCount: 1
+  clustering:
+    enabled: false
+  persistentVolume:
+    storageClass: sentry-rabbitmq
+  rabbitmqUsername: guest
+  rabbitmqPassword: guest
+  persistence:
+    enabled: true
+    storageClass: sentry-rabbitmq
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+sentry:
+  worker:
+    replicas: 1
+  ingestConsumer:
+    replicas: 1
+    autoscaling:
+      enabled: true
+
+clickhouse:
+  replicas: 1
+  enabled: true
+  clickhouse:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    replicas: 1
+    persistentVolumeClaim:
+      enabled: true
+      dataPersistentVolume:
+        storageClassName: sentry-clickhouse
+    configmap:
+      zookeeper_servers:
+        enabled: true
+
+snuba:
+  api:
+    replicas: 1
+    autoscaling:
+      enabled: true
+  consumer:
+    replicas: 1
+  outcomesConsumer:
+    replicas: 1
+  replacer:
+    replicas: 1
+  subscriptionConsumerEvents:
+    replicas: 1
+  subscriptionConsumerTransactions:
+    replicas: 1
+  sessionsConsumer:
+    replicas: 1
+  transactionsConsumer:
+    replicas: 1
+
+redis:
+  architecture: standalone
+  cluster:
+    enabled: false
+  master:
+    count: 1
+    persistence:
+      storageClass: sentry-redis
+  replica:
+    replicaCount: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+zookeeper:
+  enabled: true
+  replicaCount: 1
+  persistence:
+    enabled: true
+    storageClass: sentry-clickhouse-zookeeper
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
