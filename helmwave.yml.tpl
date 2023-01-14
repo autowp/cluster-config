@@ -24,11 +24,13 @@ releases:
     namespace: cert-manager
     chart:
       name: jetstack/cert-manager
+    depends_on:
+      - kube-prometheus-stack@monitoring
     values:
       - cert-manager-values.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: cert-manager-cluster-issuer
     namespace: cert-manager
@@ -38,7 +40,7 @@ releases:
       name: cert-manager-cluster-issuer
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: metrics-server
     namespace: kube-system
@@ -65,11 +67,13 @@ releases:
     namespace: ingress-nginx
     chart:
       name: ingress-nginx/ingress-nginx
+    depends_on:
+      - kube-prometheus-stack@monitoring
     values:
       - ingress-nginx-values.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: ceph
     namespace: ceph
@@ -81,7 +85,7 @@ releases:
       - ceph-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: backup
     namespace: backup
@@ -91,7 +95,7 @@ releases:
       - backup-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: kube-prometheus-stack
     namespace: monitoring
@@ -102,19 +106,21 @@ releases:
       - prometheus-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: keycloak
     namespace: keycloak
     chart:
       name: codecentric/keycloak
       version: 17.0.3
+    depends_on:
+      - kube-prometheus-stack@monitoring
     values:
       - keycloak-values.yaml
       - keycloak-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: gitlab-prerequisites
     namespace: gitlab
@@ -124,7 +130,7 @@ releases:
       - gitlab-prerequisites-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: gitlab
     namespace: gitlab
@@ -138,7 +144,7 @@ releases:
       - gitlab-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
 
   - name: sentry
     namespace: sentry
@@ -152,4 +158,4 @@ releases:
       - sentry-values.production.yaml
     options:
       install: true
-      create_namespace: true
+    create_namespace: true
