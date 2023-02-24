@@ -28,8 +28,6 @@ releases:
       - kube-prometheus-stack@monitoring
     values:
       - cert-manager-values.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: cert-manager-cluster-issuer
@@ -38,8 +36,6 @@ releases:
       - cert-manager@cert-manager
     chart:
       name: cert-manager-cluster-issuer
-    options:
-      install: true
     create_namespace: true
 
   - name: metrics-server
@@ -48,8 +44,6 @@ releases:
       name: metrics-server/metrics-server
     values:
       - metrics-server-values.yaml
-    options:
-      install: true
 
   - name: kubernetes-dashboard
     namespace: kube-system
@@ -60,8 +54,6 @@ releases:
     values:
       - kubernetes-dashboard-values.yaml
       - kubernetes-dashboard-values.production.yaml
-    options:
-      install: true
 
   - name: ingress-nginx
     namespace: ingress-nginx
@@ -71,8 +63,6 @@ releases:
       - kube-prometheus-stack@monitoring
     values:
       - ingress-nginx-values.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: ceph
@@ -83,8 +73,6 @@ releases:
       - ingress-nginx@ingress-nginx
     values:
       - ceph-values.production.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: backup
@@ -93,8 +81,6 @@ releases:
       name: backup
     values:
       - backup-values.production.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: kube-prometheus-stack
@@ -104,22 +90,18 @@ releases:
     values:
       - prometheus-values.yaml
       - prometheus-values.production.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: keycloak
     namespace: keycloak
     chart:
       name: codecentric/keycloak
-      version: 17.0.3
+      version: 18.4.0
     depends_on:
       - kube-prometheus-stack@monitoring
     values:
       - keycloak-values.yaml
       - keycloak-values.production.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: gitlab-prerequisites
@@ -128,34 +110,28 @@ releases:
       name: gitlab-prerequisites
     values:
       - gitlab-prerequisites-values.production.yaml
-    options:
-      install: true
     create_namespace: true
 
   - name: gitlab
     namespace: gitlab
     chart:
       name: gitlab/gitlab
-      version: 5.10.3
+      version: 6.9.1
     depends_on:
       - gitlab-prerequisites@gitlab
     values:
       - gitlab-values.yaml
       - gitlab-values.production.yaml
-    options:
-      install: true
     create_namespace: true
 
-  - name: sentry
-    namespace: sentry
-    chart:
-      name: sentry/sentry
-      version: 14.1.2
-    depends_on:
-      - kube-prometheus-stack@monitoring
-    values:
-      - sentry-values.yaml
-      - sentry-values.production.yaml
-    options:
-      install: true
-    create_namespace: true
+#  - name: sentry
+#    namespace: sentry
+#    chart:
+#      name: sentry/sentry
+#      version: 14.1.2
+#    depends_on:
+#      - kube-prometheus-stack@monitoring
+#    values:
+#      - sentry-values.yaml
+#      - sentry-values.production.yaml
+#    create_namespace: true
