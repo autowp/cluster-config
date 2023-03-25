@@ -1,6 +1,7 @@
 proxy: edge
 production: true
 httpRelativePath: "/auth/"
+replicaCount: 1
 resources:
   requests:
     memory: "64Mi"
@@ -27,7 +28,7 @@ ingress:
 autoscaling:
   enabled: true
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 5
 
 metrics:
   enabled: true
