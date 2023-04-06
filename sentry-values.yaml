@@ -84,6 +84,7 @@ rabbitmq:
       enabled: true
 
 sentry:
+  existingSecret: sentry-secret
   worker:
     replicas: 1
   ingestConsumer:
