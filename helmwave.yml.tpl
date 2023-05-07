@@ -116,7 +116,7 @@ releases:
     namespace: gitlab
     chart:
       name: gitlab/gitlab
-      version: 6.9.1
+      version: 6.11.2
     depends_on:
       - gitlab-prerequisites@gitlab
     values:
@@ -124,14 +124,35 @@ releases:
       - gitlab-values.production.yaml
     create_namespace: true
 
-#  - name: sentry
-#    namespace: sentry
-#    chart:
-#      name: sentry/sentry
-#      version: 14.1.2
-#    depends_on:
-#      - kube-prometheus-stack@monitoring
-#    values:
-#      - sentry-values.yaml
-#      - sentry-values.production.yaml
-#    create_namespace: true
+  - name: sentry-prerequisites
+    namespace: sentry
+    chart:
+      name: sentry-prerequisites
+    values:
+      - sentry.production.yaml
+    create_namespace: true
+
+  - name: sentry
+    namespace: sentry
+    chart:
+      name: sentry/sentry
+      version: 17.11.2
+    depends_on:
+      - kube-prometheus-stack@monitoring
+      - sentry-prerequisites
+    values:
+      - sentry-values.yaml
+      - sentry-values.production.yaml
+    create_namespace: true
+
+  - name: sentry-kubernetes
+    namespace: sentry
+    chart:
+      name: sentry/sentry-kubernetes
+      version: 0.3.2
+    depends_on:
+      - sentry
+    values:
+      - sentry-kubernetes/values.yaml
+      - sentry-kubernetes/values.production.yaml
+    create_namespace: true

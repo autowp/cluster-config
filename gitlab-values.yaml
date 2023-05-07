@@ -23,6 +23,8 @@ global:
     port: 22
   ingress:
     class: nginx
+    tls:
+      secretName: gitlab-tls-secret
     annotations:
       kubernetes.io/tls-acme: true
       cert-manager.io/cluster-issuer: letsencrypt

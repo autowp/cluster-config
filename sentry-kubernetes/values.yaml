@@ -1,0 +1,2 @@
+sentry:
+  dsn: https://XXXXXXXXXXXXXXXXXXXXXXXx@sentry.example.org/1
