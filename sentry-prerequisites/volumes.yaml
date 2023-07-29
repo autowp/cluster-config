@@ -49,30 +49,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: sentry-zookeeper
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 500Gi
-  local:
-    path: /root/k8s-pv/sentry/zookeeper
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - i38
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: sentry-zookeeper
-  volumeMode: Filesystem
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
   name: sentry-kafka
 spec:
   accessModes:

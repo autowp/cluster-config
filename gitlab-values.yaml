@@ -54,7 +54,7 @@ certmanager-issuer:
   cert-manager.io/cluster-issuer: letsencrypt
   email: dmitry@pereslegin.ru
 gitlab-runner:
-  enabled: true
+  install: true
   runners:
     privileged: true
 gitlab-exporter:

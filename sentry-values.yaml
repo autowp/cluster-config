@@ -49,16 +49,6 @@ kafka:
   numPartitions: 1
   persistence:
     storageClass: sentry-kafka
-  zookeeper:
-    enabled: true
-    replicaCount: 1
-    persistence:
-      enabled: true
-      storageClass: sentry-zookeeper
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
   metrics:
     kafka:
       enabled: true
