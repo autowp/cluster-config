@@ -8,7 +8,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/data
+    path: /data/sentry/data
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -16,7 +16,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-data
   volumeMode: Filesystem
@@ -32,7 +32,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/clickhouse
+    path: /data/sentry/clickhouse
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -40,7 +40,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-clickhouse
   volumeMode: Filesystem
@@ -56,7 +56,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/kafka
+    path: /data/sentry/kafka
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -64,7 +64,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-kafka
   volumeMode: Filesystem
@@ -80,7 +80,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/rabbitmq
+    path: /data/sentry/rabbitmq
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -88,7 +88,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-rabbitmq
   volumeMode: Filesystem
@@ -104,7 +104,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/redis
+    path: /data/sentry/redis
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -112,7 +112,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-redis
   volumeMode: Filesystem
@@ -128,7 +128,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/redis
+    path: /data/sentry/redis
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -136,7 +136,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-redis
   volumeMode: Filesystem
@@ -152,7 +152,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/sentry/clickhouse-zookeeper
+    path: /data/sentry/clickhouse-zookeeper
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -160,7 +160,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-clickhouse-zookeeper
   volumeMode: Filesystem

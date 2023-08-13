@@ -22,7 +22,7 @@ spec:
               secretName: s3
             name: config
           containers:
-            - name: mysql-backup
+            - name: postgresql-backup
               image: autowp/autowp-tools
               imagePullPolicy: Always
               env:

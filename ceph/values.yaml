@@ -9,3 +9,4 @@ s3:
     - name: n3
       hostname: n1.example.com
       address: 192.168.0.3
+  hostname: n1.example.com

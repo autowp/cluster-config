@@ -49,3 +49,55 @@ subsets:
       - port: 7480
         name: app-port
 {{- end }}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: s3
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.s3.hostname | quote }}
+      secretName: tls
+  rules:
+    - host: {{ .Values.s3.hostname | quote }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: s3
+                port:
+                  name: app-port
+            path: /
+            pathType: Prefix
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s3
+spec:
+  ports:
+    - name: app-port
+      port: 7480
+      protocol: TCP
+      targetPort: 7480
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: s3
+subsets:
+  - addresses:
+      {{- range .Values.s3.endpoints }}
+      - ip: {{ .address | quote }}
+      {{- end }}
+    ports:
+      - port: 7480
+        name: app-port

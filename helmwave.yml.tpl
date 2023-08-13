@@ -95,8 +95,7 @@ releases:
   - name: keycloak
     namespace: keycloak
     chart:
-      name: codecentric/keycloak
-      version: 18.4.0
+      name: bitnami/keycloak
     depends_on:
       - kube-prometheus-stack@monitoring
     values:

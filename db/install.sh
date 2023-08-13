@@ -2,4 +2,4 @@
 
 set -e
 
-helm -n db upgrade --install --create-namespace db . -f values-production.yaml
+helm diff -n db upgrade --install db . -f values-production.yaml

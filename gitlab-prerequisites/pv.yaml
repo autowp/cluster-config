@@ -8,7 +8,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/gitlab/redis
+    path: /data/gitlab/redis
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -16,7 +16,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: gitlab-redis
   volumeMode: Filesystem
@@ -32,7 +32,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/gitlab/minio
+    path: /data/gitlab/minio
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -40,7 +40,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: gitlab-minio
   volumeMode: Filesystem
@@ -69,7 +69,7 @@ spec:
 #  capacity:
 #    storage: 500Gi
 #  local:
-#    path: /root/k8s-pv/gitlab/postgresql
+#    path: /data/gitlab/postgresql
 #  nodeAffinity:
 #    required:
 #      nodeSelectorTerms:
@@ -77,7 +77,7 @@ spec:
 #            - key: kubernetes.io/hostname
 #              operator: In
 #              values:
-#                - i38
+#                - i31
 #  persistentVolumeReclaimPolicy: Retain
 #  storageClassName: gitlab-postgresql
 #  volumeMode: Filesystem
@@ -93,7 +93,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/gitlab/repo
+    path: /data/gitlab/repo
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -101,7 +101,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: gitlab-repo
   volumeMode: Filesystem
@@ -117,7 +117,7 @@ spec:
   capacity:
     storage: 500Gi
   local:
-    path: /root/k8s-pv/gitlab/prometheus
+    path: /data/gitlab/prometheus
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -125,7 +125,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i38
+                - i31
   persistentVolumeReclaimPolicy: Retain
   storageClassName: gitlab-prometheus
   volumeMode: Filesystem

@@ -1,7 +1,7 @@
 global:
   edition: ce
   psql:
-    host: 192.168.100.38
+    host: 192.168.100.31
     database: gitlabhq_production
     username: gitlab
     password:
@@ -57,6 +57,22 @@ gitlab-runner:
   install: true
   runners:
     privileged: true
+    config: |
+      [[runners]]
+        [runners.kubernetes]
+        image = "ubuntu:22.04"
+        privileged = true
+        {{- if .Values.global.minio.enabled }}
+        [runners.cache]
+          Type = "s3"
+          Path = "gitlab-runner"
+          Shared = true
+          [runners.cache.s3]
+            ServerAddress = {{ include "gitlab-runner.cache-tpl.s3ServerAddress" . }}
+            BucketName = "runner-cache"
+            BucketLocation = "us-east-1"
+            Insecure = false
+        {{ end }}
 gitlab-exporter:
   enabled: false
   metrics:
