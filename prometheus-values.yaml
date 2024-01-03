@@ -21,8 +21,8 @@ grafana:
   serviceMonitor:
     path: "/grafana/metrics"
   ingress:
+    ingressClassName: nginx
     annotations:
-      kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: letsencrypt
       nginx.ingress.kubernetes.io/rewrite-target: /$1
       nginx.ingress.kubernetes.io/use-regex: "true"
@@ -50,6 +50,7 @@ prometheus:
               storage: 50Gi
   ingress:
     enabled: true
+    ingressClassName: nginx
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
       nginx.ingress.kubernetes.io/auth-type: basic
