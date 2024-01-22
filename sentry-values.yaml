@@ -85,6 +85,8 @@ sentry:
     replicas: 1
     autoscaling:
       enabled: true
+  cleanup:
+    activeDeadlineSeconds: 86400
 
 clickhouse:
   replicas: 1
@@ -108,6 +110,7 @@ snuba:
     replicas: 1
     autoscaling:
       enabled: true
+      minReplicas: 1
   consumer:
     replicas: 1
   outcomesConsumer:

@@ -61,18 +61,25 @@ gitlab-runner:
     config: |
       [[runners]]
         [runners.kubernetes]
-          image = "ubuntu:22.04"
+          namespace = "{{.Release.Namespace}}"
+          image = "alpine"
           privileged = true
-        [runners.cache]
-          Type = "s3"
-          Path = "runner"
-          Shared = true
-          [runners.cache.s3]
-            ServerAddress = {{ include "gitlab-runner.cache-tpl.s3ServerAddress" . }}
-            BucketName = "runner-cache"
-            BucketLocation = "us-east-1"
-            Insecure = false
-            AuthenticationType = "access-key"
+
+    #    config: |
+#      [[runners]]
+#        [runners.kubernetes]
+#          image = "ubuntu:22.04"
+#          privileged = true
+#        [runners.cache]
+#          Type = "s3"
+#          Path = "runner"
+#          Shared = true
+#          [runners.cache.s3]
+#            ServerAddress = {{ include "gitlab-runner.cache-tpl.s3ServerAddress" . }}
+#            BucketName = "runner-cache"
+#            BucketLocation = "us-east-1"
+#            Insecure = false
+#            AuthenticationType = "access-key"
     cache:
       secretName: gitlab-minio-secret
 gitlab-exporter:

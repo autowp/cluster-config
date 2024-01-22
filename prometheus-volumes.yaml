@@ -4,7 +4,7 @@ metadata:
   name: prometheus
 spec:
   capacity:
-    storage: 500Gi
+    storage: 100Gi
   local:
     path: /data/prometheus
   accessModes:
@@ -19,4 +19,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i35

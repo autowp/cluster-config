@@ -16,7 +16,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-data
   volumeMode: Filesystem
@@ -40,7 +40,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-clickhouse
   volumeMode: Filesystem
@@ -64,7 +64,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-kafka
   volumeMode: Filesystem
@@ -88,7 +88,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-rabbitmq
   volumeMode: Filesystem
@@ -112,7 +112,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-redis
   volumeMode: Filesystem
@@ -136,7 +136,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-redis
   volumeMode: Filesystem
@@ -160,7 +160,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - i31
+                - i39
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sentry-clickhouse-zookeeper
   volumeMode: Filesystem
