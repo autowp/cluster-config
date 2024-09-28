@@ -1,10 +1,13 @@
-serviceMonitor:
-  enabled: true
-ingress:
-  enabled: true
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-  className: nginx
+extras:
+  serviceMonitor:
+    enabled: true
+app:
+  ingress:
+    enabled: true
+    issuer:
+      name: letsencrypt
+      scope: cluster
+    ingressClassName: nginx
 #  issuer:
 #    name: letsencrypt
 #    scope: cluster

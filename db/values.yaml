@@ -7,6 +7,20 @@ mysql:
     password: password
     rootPassword: password
   primary:
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 5
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 5
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 5
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 5
+      successThreshold: 1
     configuration: |-
       [mysqld]
       skip-name-resolve
@@ -28,6 +42,8 @@ mysql:
       max_heap_table_size=2G
       max_connections = 2000
       innodb_buffer_pool_size=20G
+      innodb_log_file_size = 2G
+      innodb_buffer_pool_instances = 16
       [client]
       port=3306
       socket=/opt/bitnami/mysql/tmp/mysql.sock
@@ -56,10 +72,55 @@ mysql:
     replicaCount: 0
   metrics:
     enabled: true
+    readinessProbe:
+      enabled: false
+    livenessProbe:
+      enabled: false
+      initialDelaySeconds: 120
+      periodSeconds: 100
+      timeoutSeconds: 10
+      successThreshold: 1
+      failureThreshold: 30
     serviceMonitor:
       enabled: true
-      additionalLabels:
+      labels:
         release: kube-prometheus-stack
+    extraArgs:
+      primary:
+        - --collect.auto_increment.columns
+        - --collect.binlog_size
+        - --collect.engine_innodb_status
+        - --no-collect.engine_tokudb_status
+        - --collect.global_status
+        - --collect.global_variables
+        - --collect.info_schema.clientstats
+        - --collect.info_schema.innodb_metrics
+        - --collect.info_schema.innodb_tablespaces
+        - --collect.info_schema.innodb_cmp
+        - --collect.info_schema.innodb_cmpmem
+        - --collect.info_schema.processlist
+        #- --collect.info_schema.processlist.min_time
+        - --collect.info_schema.query_response_time
+        - --collect.info_schema.tables
+        #- --collect.info_schema.tables.databases
+        - --collect.info_schema.tablestats
+        - --collect.info_schema.userstats
+        - --collect.perf_schema.eventsstatements
+        #- --collect.perf_schema.eventsstatements.digest_text_limit
+        #- --collect.perf_schema.eventsstatements.limit
+        #- --collect.perf_schema.eventsstatements.timelimit
+        - --collect.perf_schema.eventswaits
+        - --collect.perf_schema.file_events
+        - --collect.perf_schema.file_instances
+        - --collect.perf_schema.indexiowaits
+        - --collect.perf_schema.tableiowaits
+        - --collect.perf_schema.tablelocks
+        - --collect.perf_schema.replication_group_member_stats
+        - --no-collect.slave_status
+        - --no-collect.slave_hosts
+        #- --collect.heartbeat
+        #- --collect.heartbeat.database
+        #- --collect.heartbeat.table
 
 backup:
   s3Hostname: "s3.example.com"

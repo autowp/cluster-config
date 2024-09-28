@@ -1,4 +1,4 @@
-proxy: edge
+proxyHeaders: xforwarded
 production: true
 httpRelativePath: "/auth/"
 replicaCount: 1
@@ -13,22 +13,23 @@ resources:
 ingress:
   enabled: true
   ingressClassName: "nginx"
-  hostname: auth.pereslegin.ru
+  hostname: auth.wheelsage.org
+  hostnameStrict: false
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
   tls: true
   extraHosts:
-    - name: auth.wheelsage.org
+    - name: auth.pereslegin.ru
       path: /
   extraTls:
     - hosts:
-      - auth.wheelsage.org
-      secretName: auth.wheelsage.org-tls
+      - auth.pereslegin.ru
+      secretName: auth.pereslegin.ru-tls
 
 autoscaling:
   enabled: true
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 3
 
 metrics:
   enabled: true
