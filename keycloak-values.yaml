@@ -1,7 +1,55 @@
-proxyHeaders: xforwarded
-production: true
-httpRelativePath: "/auth/"
-replicaCount: 1
+dbchecker:
+  enabled: true
+
+command:
+  - "/opt/keycloak/bin/kc.sh"
+  - "start"
+  - "--http-port=8080"
+  - "--hostname-strict=false"
+
+database:
+  vendor: postgres
+  hostname: 192.168.100.35
+  port: 5432
+  database: keycloak
+
+http:
+  relativePath: "/auth/"
+
+serviceMonitor:
+  enabled: true
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+
+proxy:
+  enabled: true
+  mode: xforwarded
+  http:
+    enabled: true
+
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  rules:
+    - host: 'auth.wheelsage.org'
+      paths:
+        - path: /auth/
+          pathType: Prefix
+    - host: 'auth.pereslegin.ru'
+      paths:
+        - path: /auth/
+          pathType: Prefix
+  tls:
+    - hosts:
+        - auth.wheelsage.org
+        - auth.pereslegin.ru
+      secretName: keycloak-tls
+
 resources:
   requests:
     memory: "64Mi"
@@ -10,38 +58,5 @@ resources:
     memory: "4Gi"
     cpu: "2000m"
 
-ingress:
-  enabled: true
-  ingressClassName: "nginx"
-  hostname: auth.wheelsage.org
-  hostnameStrict: false
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-  tls: true
-  extraHosts:
-    - name: auth.pereslegin.ru
-      path: /
-  extraTls:
-    - hosts:
-      - auth.pereslegin.ru
-      secretName: auth.pereslegin.ru-tls
-
-autoscaling:
-  enabled: true
-  minReplicas: 1
-  maxReplicas: 3
-
 metrics:
   enabled: true
-  serviceMonitor:
-    enabled: true
-  prometheusRule:
-    enabled: true
-
-postgresql:
-  enabled: false
-
-externalDatabase:
-  host: "192.168.100.35"
-  port: 5432
-  database: keycloak
